@@ -1,0 +1,26 @@
+<html>
+<head>
+    <!-- <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script> -->
+    <script type="text/javascript" src="../jquery.min.js"></script>
+    <script src="../angular.min.js"></script>
+</head>
+<body>
+    <div ng-app="myModule" ng-controller="ctrlExample1" ng-init="myInitController()">
+        <input type="number" ng-model="qty"><br />
+        <input type="number" ng-model="cost"><br />
+        Total: {{ qty * cost}}
+    </div>
+
+<script type="text/javascript">
+    var module = angular.module('myModule', []);
+    module.controller('ctrlExample1', function($scope){
+        $scope.myInitController = function(){
+            $scope.qty = 5; 
+            $scope.cost = 6;
+        }
+    });
+</script>
+
+</body>
+</html>
