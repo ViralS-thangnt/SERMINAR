@@ -1,0 +1,68 @@
+<html>
+<head>
+    <!-- <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script> -->
+<!--     <script src="../../jquery.min.js"></script> -->
+    <script src="../../angular-1.4.3/angular.min.js"></script>
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script> -->
+    <script src="../../ui-route.min.js"></script>
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script> -->
+    <!-- <script src="http://code.angularjs.org/1.2.13/angular.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script> -->
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-resource.min.js">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-route.min.js"></script> -->
+    
+</head>
+<body ng-app="myModule" ng-controller="ctrlExample1">
+
+    <div ng-init="myInitController()">
+        <a ui-sref="dashboard">Dashboard</a><br />
+        <a ui-sref="missingreport">Missing Manager</a><br />
+        <a ui-sref="list">Missing List</a><br />
+        <a ui-sref="absence_report">Absence</a><br />
+        <a ui-sref="overtime_report">Overtime</a><br />
+        
+    </div>
+<div ui-view style="height:100px; border: 1px red solid; text-align: center"></div>
+
+    <script type="text/javascript">
+        var myApp = angular.module('myModule', ['ui.router']);
+
+        myApp.controller('ctrlExample1', function($scope){
+            $scope.myInitController = function(){
+                $scope.qty = 5; 
+                $scope.cost = 6;
+                console.log('Init data');
+            }
+
+        });
+
+        myApp.config(function($stateProvider, $urlRouterProvider){
+            $urlRouterProvider.otherwise('/dashboard');
+
+            $stateProvider
+            .state('dashboard', {
+                url: "/dashboard",
+                templateUrl: "./dashboard.html"
+            })
+            .state('missingreport', {
+                url: "/missingreport",
+                templateUrl: "./missing_report.html"
+            })
+            .state('list', {
+                url: '/list',
+                templateUrl: "./list_missing.html"
+            });
+
+        });
+
+        myApp.run(function($state){
+            $state.transitionTo('dashboard');
+        });
+    </script>
+
+</body>
+</html>
