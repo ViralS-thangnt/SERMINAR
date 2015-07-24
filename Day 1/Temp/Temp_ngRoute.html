@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="../../angular-1.4.3/angular.min.js"></script>
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script> -->
+    <script src="../../angular-1.4.3/angular-route.min.js"></script>
+
+    <title></title>
+</head>
+<body ng-app="myApp" >
+    <div >
+        <a href="#/dashboard">Dashboard</a><br />
+        <a href="#/missing">Missing Report</a>
+
+    </div>
+    <div ng-view></div>
+    <script type="text/javascript">
+    var myApp = angular.module('myApp', ['ngRoute']);
+
+    myCtrl = myApp.controller('myCtrl', function($scope){
+        $scope.initData = function(){
+            $scope.qty = 5;
+            $scope.cost = 6;
+            console.log($scope.qty * $scope.cost);
+        }
+    })
+
+    myApp.config(function($routeProvider){
+        $routeProvider
+            .when('/dashboard', {
+                templateUrl: 'dashboard.html'
+            })
+            .when('/missing', {
+                templateUrl: 'missing.html'
+            })
+            .otherwise({
+                redirectTo: '/dashboard'
+            });
+    });
+
+
+
+    </script>
+</body>
+</html>

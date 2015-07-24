@@ -1,0 +1,70 @@
+<html>
+<head>
+    <!-- <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script> -->
+<!--     <script src="../../jquery.min.js"></script> -->
+    <script src="../../angular-1.4.3/angular.min.js"></script>
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script> -->
+    <script src="../../angular-1.4.3/angular-route.min.js"></script>
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script> -->
+    <!-- <script src="http://code.angularjs.org/1.2.13/angular.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script> -->
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-resource.min.js">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-route.min.js"></script> -->
+    
+</head>
+<body ng-app="myModule" ng-controller="ctrlExample1">
+
+    <div ng-init="myInitController()">
+        <a href="#/dashboard">Dashboard</a><br />
+        <a href="#/missingreport">Missing Manager</a>  >>> <a href="#/missingreport/list">Missing List</a><br />
+        <a href="#/absence_report">Absence</a><br />
+        <a href="#/overtime_report">Overtime</a><br />
+        
+    </div>
+<div ng-view style="height:100px; border: 1px red solid; text-align: center"></div>
+
+    <script type="text/javascript">
+        var myApp = angular.module('myModule', ['ngRoute']);
+
+        myApp.controller('ctrlExample1', function($scope){
+            $scope.myInitController = function(){
+                $scope.qty = 5; 
+                $scope.cost = 6;
+                console.log('Init data');
+            }
+        });
+
+        myApp.config(function($routeProvider){
+            $routeProvider
+                .when('/dashboard', {
+                    templateUrl: 'dashboard.html'
+
+                })
+                .when('/missingreport', {
+                    templateUrl: 'missing_report.html'
+                })
+                .when('/missingreport/list', {
+                    templateUrl: 'missingreport_list.html'
+                })
+                .when('/absence_report', {
+                    templateUrl: 'absence_report.html'
+                })
+                .when('/overtime_report', {
+                    templateUrl: 'overtime_report.html'
+                })
+                .otherwise({
+                    redirectTo: '/dashboard'
+                })
+        });
+
+        // myApp.run(function($state){
+        //     // $state.transitionTo('dashboard');
+        // });
+    </script>
+
+</body>
+</html>
