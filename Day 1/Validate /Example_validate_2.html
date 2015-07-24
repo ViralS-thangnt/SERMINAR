@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>  
+<body>
+
+<h2>Validation Example 2</h2>
+<!--The HTML form attribute novalidate is used to disable default browser validation.-->
+<form ng-app="myApp" ng-controller="validateCtrl" name="myForm" novalidate>
+
+<p>Quality:<br>
+        <input type="number" name="quality" ng-model="quality" required ng-minlength = "2">
+        <span style="color:red" ng-show="myForm.quality.$dirty && myForm.quality.$invalid">
+        <span ng-show="myForm.quality.$error.required">Quality is required.</span>
+        <span ng-show="myForm.quality.$error.number">Invalid Quality number.</span>
+        <span ng-show="myForm.quality.$error.minlength">Min length is 2 letters</span>
+        </span>
+</p>
+
+<p>Cost:<br>
+<input type="number" name="cost" ng-model="cost" required ng-maxlength = "6">
+<span style="color:red" ng-show="myForm.cost.$dirty && myForm.cost.$invalid">
+<span  ng-show="myForm.cost.$error.required">Cost is required.</span>
+<span  ng-show="myForm.cost.$error.number">Invalid Cost number.</span>
+<span ng-show="myForm.cost.$error.maxlength">Max length is 6 letters</span>
+</span>
+</p>
+ <div  ng-show= "isMessages" class="alert alert-default fade in " style= "background-color: #edc0b8">
+    <a href="#" class="close pull-right" ng-click="deleteMessage()" aria-label="close">&times;</a>
+    {{messages}}
+</div>
+
+<p>
+<input type="submit"
+ng-disabled="myForm.quality.$dirty && myForm.quality.$invalid ||  
+myForm.cost.$dirty && myForm.cost.$invalid" ng-click = "total()">
+</p>
+    <h4> Total : {{totalAll}} </h4>
+
+</form>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('validateCtrl', function($scope) {
+    $scope.quality = 22;
+    $scope.cost = 6;
+    $scope.total = function () {
+        $scope.totalAll =  $scope.quality *  $scope.cost;
+         var max = $scope.checkMax();
+         if(max !=0){
+            $scope.isMessages = true;
+            $scope.messages = max;
+         }
+    };
+    $scope.checkMax = function () {      
+        if($scope.totalAll >1000) {
+            return 'Total greater than 1000';
+        } else {
+            return 0;
+        }
+    };
+    $scope.deleteMessage = function () {
+         $scope.isMessages = false;
+         $scope.messages = [];
+    };
+});
+</script>
+
+</body>
+</html>
