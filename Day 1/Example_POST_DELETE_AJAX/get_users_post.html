@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="../../angular-1.4.3/angular.min.js"></script>
+    <title>
+        
+    </title>
+    <style type="text/css">
+        .custom_border{
+            border: 1px solid; 
+        }
+        .err{
+            color: red;
+        }
+    </style>
+</head>
+
+<body ng-app="myApp" ng-controller="myController">
+    <button ng-click="getData()">Get Data</button>
+    <table width="100%" id="data_form" name="data_form"
+        class="custom_border" ng-init="initData()">
+        <th width='20px' name="id">ID</th>
+
+        <th width='150px' name="username">UserName</th>
+        <th width='300px' name="email">Email</th>
+        <th width='200px' name="name">Name</th>
+        <tr ng-repeat='user in users | orderBy: "id"' >
+            <td width='20px' ng-model="user.id" class="custom_border">{{ user.id}}</td>
+            <td width='150px' ng-model="user.username" class="custom_border">{{ user.username}}</td>
+            <td width='300px' ng-model="user.email" class="custom_border">{{ user.email}}</td>
+            <td width='200px' ng-model="user.last_name" class="custom_border">{{ user.last_name}}</td>
+        </tr>
+    </table>
+    <div ng-show="isLoading" style="color: blue">Loading...</div>
+    <div ng-show="isError" class="err">Get data error. Code: {{ err }}</div>
+
+    <form name="form_add_new" id="add_new">
+        Name: <input type="text" ng-model="add_name">
+        Email: <input type="text" ng-model="add_email">
+        <button id="btn_add_new" ng-click="addNew()" >Add New User</button>
+    </form>
+
+    <script type="text/javascript">
+    var myApp = angular.module('myApp', []);
+
+    myApp.controller('myController', function($scope, $http){
+        $scope.initData = function(){
+            $scope.isLoading = false;
+            $scope.isError = false;
+
+            $scope.users = '';
+            $scope.link = 'http://shielded-sands-3890.herokuapp.com/api/get_list_users';
+            $scope.link_add = 'http://shielded-sands-3890.herokuapp.com/angularjs/add_new_user';
+
+            // $scope.link = 'http://ojsapi.app/api/get_list_users';
+            // $scope.link_add = 'http://ojsapi.app/angularjs/add_new_user';
+
+            console.log('Init data for example !');
+        }
+
+        $scope.getData = function(){
+            $scope.isLoading = true;
+            $scope.isError = false;
+            $scope.users = {};
+
+            // Ping API
+            $http.get(
+                $scope.link
+            )
+            .success(function(response){
+                $scope.isLoading = false;
+                console.log(response);
+                $scope.users = response.data;
+            })
+            .error(function(data, status){
+                $scope.isLoading = false;
+                $scope.isError = true;
+                $scope.err = status;
+                
+                console.log($scope.err);
+                console.log('Error !');
+            });
+        }
+
+        $scope.addNew = function(){
+            console.log('ADD NEW');
+
+            console.log($scope.link_add);
+            $http({
+                method : 'post',
+                url: $scope.link_add,
+                data: {
+                    last_name:$scope.add_name,
+                    email:$scope.add_email
+                }
+            })
+            .success(function(response){
+                console.log('post success');
+                console.log(response);
+
+                $scope.add_email = '';
+                $scope.add_name = '';
+
+                $scope.getData();
+            })
+            .error(function(data, status){
+                console.log('post error : ');
+                console.log(data, status);
+            });
+
+        }
+    });
+    
+    myApp.config(function($httpProvider){
+        $httpProvider.defaults.timeout = 5000;
+    });
+    </script>
+
+
+</body>
+
+</html>
