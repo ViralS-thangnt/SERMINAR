@@ -34,7 +34,11 @@
     <div ng-show="isLoading" style="color: blue">Loading...</div>
     <div ng-show="isError" class="err">Get data error. Code: {{ err }}</div>
 
-    
+    <form name="form_add_new" id="add_new">
+        Name: <input type="text" id="add_name">
+        Email: <input type="text" id="add_email">
+        <button id="btn_add_new" ng-click="addNew()" >Add New User</button>
+    </form>
 
     <script type="text/javascript">
     var myApp = angular.module('myApp', []);
@@ -72,7 +76,12 @@
                 console.log('Error !');
             });
         }
+        $scope.addNew = function(){
+            console.log('ADD NEW');
+        }
     });
+    
+
 
     myApp.config(function($httpProvider){
         $httpProvider.defaults.timeout = 5000;
