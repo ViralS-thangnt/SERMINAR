@@ -17,18 +17,23 @@
 
 <body ng-app="myApp" ng-controller="myController">
     <button ng-click="getData()">Get Data</button>
-    <table width="100%" id="data_form" name="data_form"
-        class="custom_border" ng-init="initData()">
+    <table width="100%" id="data_form" name="data_form" class="custom_border" ng-init="initData()">
         <th width='20px' name="id">ID</th>
 
-        <th width='150px' name="username">UserName</th>
-        <th width='300px' name="email">Email</th>
-        <th width='200px' name="name">Name</th>
+        <th width='100px' name="username">UserName</th>
+        <th width='200px' name="email">Email</th>
+        <th width='100px' name="name">Name</th>
+        <th width='40px' name="name">Action</th>
         <tr ng-repeat='user in users | orderBy: "id"' >
             <td width='20px' ng-model="user.id" class="custom_border">{{ user.id}}</td>
             <td width='150px' ng-model="user.username" class="custom_border">{{ user.username}}</td>
             <td width='300px' ng-model="user.email" class="custom_border">{{ user.email}}</td>
             <td width='200px' ng-model="user.last_name" class="custom_border">{{ user.last_name}}</td>
+            <td width='40px' class="custom_border">
+                <button ng-click="deleteUser()">
+                    Delete
+                </button>
+            </td>
         </tr>
     </table>
     <div ng-show="isLoading" style="color: blue">Loading...</div>
@@ -49,11 +54,12 @@
             $scope.isError = false;
 
             $scope.users = '';
-            $scope.link = 'http://shielded-sands-3890.herokuapp.com/api/get_list_users';
-            $scope.link_add = 'http://shielded-sands-3890.herokuapp.com/angularjs/add_new_user';
+            // $scope.link = 'http://shielded-sands-3890.herokuapp.com/api/get_list_users';
+            // $scope.link_add = 'http://shielded-sands-3890.herokuapp.com/angularjs/add_new_user';
 
-            // $scope.link = 'http://ojsapi.app/api/get_list_users';
-            // $scope.link_add = 'http://ojsapi.app/angularjs/add_new_user';
+            $scope.link = 'http://ojsapi.app/api/get_list_users';
+            $scope.link_add = 'http://ojsapi.app/angularjs/add_new_user';
+            $scope.link_delete  = 'http://ojsapi.app/angularjs/delete_user';
 
             console.log('Init data for example !');
         }
@@ -109,6 +115,26 @@
             });
 
         }
+
+        $scope.deleteUser = function(){
+            console.log('DELETE USER');
+            $scope.isLoading = true;
+
+            $http({
+                method: 'PUT',
+                data: {
+
+                },
+                url: $scope.link_delete
+            })
+
+
+
+
+
+
+        }
+
     });
     
     myApp.config(function($httpProvider){
