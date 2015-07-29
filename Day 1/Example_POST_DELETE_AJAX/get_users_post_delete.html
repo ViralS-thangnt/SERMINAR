@@ -17,6 +17,7 @@
 
 <body ng-app="myApp" ng-controller="myController">
     <button ng-click="getData()">Get Data</button>
+    <input type="text" ng-model="search.$" placeholder="Search local">
     <table width="100%" id="data_form" name="data_form" class="custom_border" ng-init="initData()">
         <th width='20px' name="id">ID</th>
 
@@ -24,7 +25,7 @@
         <th width='200px' name="email">Email</th>
         <th width='100px' name="name">Name</th>
         <th width='40px' name="name">Action</th>
-        <tr ng-repeat='user in users | orderBy: "id"' >
+        <tr ng-repeat='user in users | orderBy: "id" |filter:search:false' >
             <td width='20px' ng-model="user.id" class="custom_border">{{ user.id}}</td>
             <td width='150px' ng-model="user.username" class="custom_border">{{ user.username}}</td>
             <td width='300px' ng-model="user.email" class="custom_border">{{ user.email}}</td>
@@ -54,12 +55,13 @@
             $scope.isError = false;
 
             $scope.users = '';
-            // $scope.link = 'http://shielded-sands-3890.herokuapp.com/api/get_list_users';
-            // $scope.link_add = 'http://shielded-sands-3890.herokuapp.com/angularjs/add_new_user';
+            $scope.link = 'http://shielded-sands-3890.herokuapp.com/api/get_list_users';
+            $scope.link_add = 'http://shielded-sands-3890.herokuapp.com/angularjs/add_new_user';
+            $scope.link_delete  = 'http://shielded-sands-3890.herokuapp.com/angularjs/delete_user';
 
-            $scope.link = 'http://ojsapi.app/api/get_list_users';
-            $scope.link_add = 'http://ojsapi.app/angularjs/add_new_user';
-            $scope.link_delete  = 'http://ojsapi.app/angularjs/delete_user';
+            // $scope.link = 'http://ojsapi.app/api/get_list_users';
+            // $scope.link_add = 'http://ojsapi.app/angularjs/add_new_user';
+            // $scope.link_delete  = 'http://ojsapi.app/angularjs/delete_user';
 
             console.log('Init data for example !');
         }
@@ -67,7 +69,7 @@
         $scope.getData = function(){
             $scope.isLoading = true;
             $scope.isError = false;
-            $scope.users = {};
+            $scope.users = [{}];
 
             // Ping API
             $http.get(
@@ -84,7 +86,7 @@
                 $scope.err = status;
                 
                 console.log($scope.err);
-                console.log('Error !');
+                window.alert('Error !');
             });
         }
 
@@ -112,6 +114,8 @@
             .error(function(data, status){
                 console.log('post error : ');
                 console.log(data, status);
+                window.alert('Error !');
+
             });
 
         }
@@ -131,7 +135,7 @@
                 data: {},
                 url: $scope.link_delete + '/' + user_id
             })
-            .success(function(){
+            .success(function(response){
                 $scope.getData();
                 window.alert('Delete Success !');
             })
